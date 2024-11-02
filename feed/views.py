@@ -1,8 +1,6 @@
 from django.shortcuts import render
-
-tweets = [{'name': 'Nandinha', 'text': 'My first tweet'},{'name': 'Gabs', 'text' : 'This is my second tweet'}]
-
+from .models import tweet
 
 def home(request):
-    context = {'tweets' : tweets}
+    context = {'tweets' : tweet.objects.all}
     return render(request, 'feed/home.html', context)

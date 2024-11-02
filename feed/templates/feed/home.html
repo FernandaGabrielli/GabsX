@@ -1,12 +1,52 @@
-{% extends 'feed/base.html'%}
+{% extends 'feed/base.html' %}
 
-{%block content%}
+{% block content %}
+    <style>
+        .container {
+            display: flex;
+            justify-content: center; /* Centraliza os cards horizontalmente */
+            flex-direction: column; /* Alinha os cards em coluna */
+            padding-top: 50px; /* Espaçamento de 50px do topo da navbar */
+        }
+        
+        .card {
+            border: none; /* Remove a borda dos cards */
+            max-width: 80rem; /* Define a largura máxima dos cards */
+            width: 100%; /* Faz com que o card ocupe 100% da largura disponível até o máximo */
+        }
+        
+        .card-header {
+            background-color: #471763;
+            color: white; /* Deixar o texto do cabeçalho em branco para melhor contraste */
+            display: flex; /* Usar flexbox para alinhar os itens */
+            justify-content: space-between; /* Distribui espaço entre os itens */
+            align-items: center; /* Alinha os itens verticalmente ao centro */
+        }
+        
+        .card-body {
+            background-color: #2C0B3E;
+            color: white; /* Deixar o texto do corpo em branco para melhor contraste */
+        }
 
-    <div class="container"></div>
+        .datetime {
+            font-size: 0.8rem; /* Tamanho menor para a data/hora */
+            color: rgba(255, 255, 255, 0.7); /* Cor um pouco mais clara para a data/hora */
+        }
+    </style>
 
-    {% for tweet in tweets%}
-        <a href="#">{{tweet.name}}</a>
-        <p>{{tweet.text}}</p>
-
-    {% endfor %}
-{%endblock content%}
+    <div class="container">
+        {% for tweet in tweets %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <a href="">{{ tweet.uname }}</a>
+                <span class="datetime">{{ tweet.datetime }}</span> <!-- Mova a hora aqui -->
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>{{ tweet.text }}</p>
+                </blockquote>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
