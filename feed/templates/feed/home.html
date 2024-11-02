@@ -1,0 +1,12 @@
+{% extends 'feed/base.html'%}
+
+{%block content%}
+
+    <div class="container"></div>
+
+    {% for tweet in tweets%}
+        <a href="#">{{tweet.name}}</a>
+        <p>{{tweet.text}}</p>
+
+    {% endfor %}
+{%endblock content%}
