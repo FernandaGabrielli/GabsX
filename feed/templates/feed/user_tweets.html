@@ -16,7 +16,6 @@
         }
         
         .card-header {
-            text-decoration: none;
             background-color: #471763;
             color: white; 
             display: flex; 
@@ -35,54 +34,12 @@
         }
 
         .like-btn {
-            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            color: white; /* Cor inicial do botão */
+            cursor: pointer;
         }
 
         .liked {
-            color: #6E3EB5; /* Cor do coração quando curtido */
-        }
-
-        .input-group {
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #fff;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 1.3rem;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            font-size: 0.9rem;
-        }
-
-        .input-group input::placeholder {
-            color: #ccc;
-        }
-
-        .btnTT {
-            display: inline-block;
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 24px;
-            border: none;
-            border-radius: 5px;
-            background-color: #9c27b0;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btnTT:hover {
-            background-color: #7b1fa2;
+            color: #6E3EB5; /* Cor ao curtir */
         }
 
         .user {
@@ -95,29 +52,18 @@
             color: #7b1fa2;
         }
 
-        /* Estilo específico para dispositivos móveis */
-        @media (max-width: 767.98px) {
-            .input-group input {
-                height: 150px; /* Aumenta o padding para aumentar a altura */
-            }
+        .like-btn i {
+            visibility: visible !important; /* Para garantir que o ícone esteja visível */
+            font-size: 1.5rem; /* Tamanho do ícone */
         }
+
     </style>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-
     <div class="container">
-        <!-- Formulário para adicionar um novo tweet -->
-        <form method="POST">
-            {% csrf_token %}
-            <div class="input-group">
-                {{ form.text }}  <!-- Renderiza o campo do formulário -->
-            </div>
-            <button type="submit" class="btnTT">Tweetar</button>
-        </form>
-        {% for tweet in object_list %}
+        {% for tweet in tweets %}
         <div class="card mb-3">
             <div class="card-header">
-                <a href="#" class="user">{{ tweet.uname }}</a>
+                <a class="user" href="#">{{ tweet.uname }}</a>
                 <span class="datetime">{{ tweet.datetime }}</span> 
             </div>
             <div class="card-body">
@@ -150,11 +96,11 @@
                     headers: { 'X-CSRFToken': '{{ csrf_token }}' },
                     success: function(response) {
                         if (response.liked) {
-                            $this.find('i').addClass('liked'); // Adiciona a classe 'liked' ao ícone
+                            $this.addClass('liked');
                         } else {
-                            $this.find('i').removeClass('liked'); // Remove a classe 'liked' do ícone
+                            $this.removeClass('liked');
                         }
-                        $this.next('.like-count').text(response.total_likes); // Atualiza a contagem de curtidas
+                        $this.next('.like-count').text(response.total_likes);
                     }
                 });
             });

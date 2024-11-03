@@ -17,7 +17,7 @@
             background-color: #372953;
             position: relative;
         }
-        .navbar .btn-custom {
+        .navbar .btn-custom, .navbar .btn-red {
             font-size: 0.8rem;
             color: white;
             border: none;
@@ -43,6 +43,7 @@
             left: 50%;
             transform: translateX(-50%);
             transition: color 0.3s ease;
+            text-decoration: none;
         }
         .navbar .title:hover {
             color: #d3d3d3;
@@ -62,32 +63,38 @@
         .navbar .nav-link.sair:hover {
             color: #ff6666; /* Cor de hover mais clara no link "Sair" */
         }
+        .btn-red {
+            background-color: red; 
+            color: white;
+        }
+        /* Ocultar a mensagem de boas-vindas em telas pequenas */
+        @media (max-width: 767.98px) {
+            .welcome-message {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex align-items-center">
-            <!-- Espaçamento entre os botões -->
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary btn-custom me-2" type="button">Adicionar novo post</button>
-                <button class="btn btn-secondary btn-custom" type="button">Meus posts</button>
+                <a href="{% url 'user_tweets' %}" class="btn btn-secondary btn-custom" type="button">Meus posts</a>
             </div>
 
-            <!-- Centralizar o título -->
-            <span class="title" href="{% url 'login' %}">GabsX</span>
+            <a class="title" href="{% url 'home' %}">GabsX</a>
 
-            <!-- Alinhar os links à direita -->
             <div class="ms-auto d-flex align-items-center">
-                <a class="nav-link text-white" href="#">Bem-vindo, {{ user.username }}</a>
+                <span class="nav-link welcome-message text-white">Bem-vindo, {{ user.username }}</span>
                 <form method="POST" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-link">Sair</button>
+                    <button type="submit" class="btn btn-red btn-custom">Sair</button> <!-- Adicionei a classe btn-custom aqui -->
                 </form>                
             </div>
         </div>
     </nav>
 
-    {%block content%}
-    {%endblock content%} 
+    {% block content %}
+    {% endblock content %} 
 </body>
 </html>

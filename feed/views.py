@@ -1,12 +1,42 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import tweet  # Certifique-se de que este import está correto e em minúsculas
+from .models import tweet  # Importação do modelo de tweet em minúsculas
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from django import forms
 
-@login_required
-def home(request):
-    context = {'tweets': tweet.objects.all()}
-    return render(request, 'feed/home.html', context)
+# Formulário para criar um tweet
+class TweetForm(forms.ModelForm):
+    class Meta:
+        model = tweet
+        fields = ['text']
+
+class TweetListView(LoginRequiredMixin, ListView):
+    model = tweet
+    template_name = 'feed/home.html'
+    ordering = ['-datetime']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = TweetForm()  # Adicionando o formulário ao contexto
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = TweetForm(request.POST)
+        if form.is_valid():
+            tweet_instance = form.save(commit=False)
+            tweet_instance.uname = request.user  # Atribuindo o usuário ao tweet
+            tweet_instance.save()  # Salva o tweet no banco de dados
+            return redirect('home')  # Redireciona para a página inicial após criar o tweet
+        return self.get(request, *args, **kwargs)  # Retorna a mesma página se o formulário não for válido
+
+
+def user_tweets(request):
+    # Exibe apenas os tweets do usuário autenticado
+    context = {'tweets': tweet.objects.filter(uname=request.user)}
+    
+    return render(request, 'feed/user_tweets.html', context)
 
 def like_tweet(request, tweet_id):
     tweet_obj = get_object_or_404(tweet, id=tweet_id)

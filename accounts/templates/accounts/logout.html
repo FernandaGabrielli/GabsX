@@ -6,13 +6,11 @@
     <title>Logout - GabsX</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-    <title>GabsX</title>
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: -box;
+            box-sizing: border-box; /* Corrigido aqui */
             font-family: 'Raleway', sans-serif;
             font-size: 0.8rem;
         }
@@ -49,6 +47,19 @@
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
         }
+        
+        a {
+            font-size: 1.0rem;
+            text-decoration: none; /* Remove o sublinhado padrão */
+            color: #fff; /* Define a cor do link */
+            display: block;
+            transition: color 0.5s; /* Adiciona transição suave para a cor */
+        }
+
+        a:hover {
+            text-decoration: none; /* Mantém o sublinhado ao passar o mouse */
+            color: #9c27b0; /* Cor do link ao passar o mouse */
+        }
 
         .btn-home {
             display: inline-block;
@@ -60,7 +71,7 @@
             color: #fff;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.5s; /* Aumenta a duração da transição do fundo */
             text-decoration: none;
         }
 
@@ -73,11 +84,9 @@
 <body>
     <div class="logout-box">
         <h2>GabsX</h2>
-            <p>
-                Você foi desconectado com sucesso!
-            </p>
+        <p>Você foi desconectado com sucesso!</p>
         <p>Obrigada por fazer parte disso 🥰👾</p>
-        <p>Qualquer coisa me contata pelo Linkedin, será um prazer 😃</p>
+        <a href="https://www.linkedin.com/in/fernandagabrielli/">Qualquer coisa me contata pelo Linkedin, será um prazer 😃</a>
         <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
             {% csrf_token %}
             <button type="submit">Logout</button>
