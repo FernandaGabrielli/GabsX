@@ -82,7 +82,7 @@
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
-        <a href="{% url 'login' %}" onclick="document.getElementById('logout-form').submit(); return false;" class="btn-home">Deseja conectar novamente?</a>
+        <a href="{% url 'login' %}" class="btn-home">Deseja conectar novamente?</a>
     </div>
 </body>
 </html>

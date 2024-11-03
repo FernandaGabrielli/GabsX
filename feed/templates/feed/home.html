@@ -32,21 +32,60 @@
             font-size: 0.8rem; 
             color: rgba(255, 255, 255, 0.7); 
         }
+
+        .like-btn {
+            color: white;
+            cursor: pointer;
+        }
+
+        .liked {
+            color: #6E3EB5;
+        }
     </style>
 
     <div class="container">
         {% for tweet in tweets %}
         <div class="card mb-3">
             <div class="card-header">
-                <a href="">{{ tweet.uname }}</a>
+                <a href="#">{{ tweet.uname }}</a>
                 <span class="datetime">{{ tweet.datetime }}</span> 
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0">
                     <p>{{ tweet.text }}</p>
                 </blockquote>
+                <div>
+                    <span class="like-btn {% if request.user in tweet.likes.all %}liked{% endif %}" 
+                          data-tweet-id="{{ tweet.id }}">
+                        &#9829;
+                    </span>
+                    <span class="like-count">{{ tweet.total_likes }}</span> curtidas
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.like-btn').click(function() {
+                const $this = $(this);
+                const tweetId = $this.data('tweet-id');
+                $.ajax({
+                    url: "{% url 'like_tweet' 0 %}".replace('0', tweetId),
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    success: function(response) {
+                        if (response.liked) {
+                            $this.addClass('liked');
+                        } else {
+                            $this.removeClass('liked');
+                        }
+                        $this.next('.like-count').text(response.total_likes);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock content %}

@@ -8,12 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-  * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Raleway', sans-serif;
-            font-size: 12px;
+            font-size: 15px;
         }
 
         body {
@@ -103,15 +103,16 @@
             font-size: 0.9rem;
         }
 
-        .register a {
-            color: #9c27b0;
-            text-decoration: none;
+        a {
+            font-weight:900;
+            color: #8f5fbb; /* Cor desejada */
+            text-decoration: none; /* Remove o sublinhado */
         }
 
-        .register a:hover {
-            text-decoration: underline;
+        a:hover {
+            color: #7b1fa2;
         }
-    </style>
+</style>
 </head>
 
 <body>
@@ -122,19 +123,15 @@
                 <h2>GabsX</h2>
                 <h3>Cadastre-se</h3>
                 <div class="input-group">
-                    {{ form.username.label_tag }}
                     {{ form.username }}
                 </div>
                 <div class="input-group">
-                    {{ form.email.label_tag }}
                     {{ form.email }}
                 </div>
                 <div class="input-group">
-                    {{ form.password1.label_tag }}
                     {{ form.password1 }}
                 </div>
                 <div class="input-group">
-                    {{ form.password2.label_tag }}
                     {{ form.password2 }}
                 </div>
                 <button type="submit" class="btn">Sign in</button>
