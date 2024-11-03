@@ -74,12 +74,15 @@
             </div>
 
             <!-- Centralizar o título -->
-            <span class="title">GabsX</span>
+            <span class="title" href="{% url 'login' %}">GabsX</span>
 
             <!-- Alinhar os links à direita -->
             <div class="ms-auto d-flex align-items-center">
                 <a class="nav-link text-white" href="#">Bem-vindo, [Nome de Usuário]</a>
-                <a class="nav-link sair" href="#">Sair</a>
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link">Sair</button>
+                </form>                
             </div>
         </div>
     </nav>

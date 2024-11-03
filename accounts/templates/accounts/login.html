@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GabsX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #3C1054 0%, #150420 100%);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 20rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .input-group input::placeholder {
+            color: #ccc;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #9c27b0;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #7b1fa2;
+        }
+
+        .register {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .register a {
+            color: #9c27b0;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+        .message-sucessful{
+            padding-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form method="POST">
+            <div class="login-box">
+                <h2>GabsX</h2>
+                <h3>Login</h3>
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="username" id="username" name="username" placeholder="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign in</button>
+                </form>
+                <p class="register">É a sua primeira vez aqui? <a href="{% url 'register' %}">Clique aqui!</a></p>
+                <div class="message-sucessful">
+                    <p>
+                        {%if messages%}
+                        {%for message in messages%}
+                            {{message}}
+                        {%endfor%}
+                    {%endif%}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>
