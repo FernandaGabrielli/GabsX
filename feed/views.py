@@ -31,11 +31,30 @@ class TweetListView(LoginRequiredMixin, ListView):
             return redirect('home')  # Redireciona para a página inicial após criar o tweet
         return self.get(request, *args, **kwargs)  # Retorna a mesma página se o formulário não for válido
 
+from django.http import JsonResponse
+
+@login_required
+def edit_tweet(request, tweet_id):
+    tweet_instance = get_object_or_404(tweet, id=tweet_id, uname=request.user)
+    if request.method == 'POST':
+        form = TweetForm(request.POST, instance=tweet_instance)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
+
+@login_required
+def delete_tweet(request, tweet_id):
+    tweet_instance = get_object_or_404(tweet, id=tweet_id, uname=request.user)
+    if request.method == 'POST':
+        tweet_instance.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 def user_tweets(request):
     # Exibe apenas os tweets do usuário autenticado
     context = {'tweets': tweet.objects.filter(uname=request.user)}
-    
     return render(request, 'feed/user_tweets.html', context)
 
 def like_tweet(request, tweet_id):
@@ -46,5 +65,4 @@ def like_tweet(request, tweet_id):
     else:
         tweet_obj.likes.add(request.user)  # Curtir
         liked = True
-    
     return JsonResponse({'liked': liked, 'total_likes': tweet_obj.total_likes()})

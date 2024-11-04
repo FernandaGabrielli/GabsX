@@ -57,6 +57,42 @@
             font-size: 1.5rem; /* Tamanho do ícone */
         }
 
+        .btn-edit, .btn-save, .btn-cancel {
+            background-color: #9c27b0;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 5px;
+        }
+
+        .btn-edit:hover, .btn-save:hover, .btn-cancel:hover {
+            background-color: #7b1fa2;
+        }
+
+        .btn-delete {
+            background-color: #e53935;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-container {
+            margin-top: 5px;
+        }
+
+        .edit-form {
+            padding: 5px;
+        }
     </style>
 
     <div class="container">
@@ -77,6 +113,22 @@
                     </span>
                     <span class="like-count">{{ tweet.total_likes }}</span> curtidas
                 </div>
+                {% if tweet.uname == request.user %}
+                <div class="btn-container" id="btn-container-{{ tweet.id }}">
+                    <button class="btn-edit edit-btn" data-tweet-id="{{ tweet.id }}">Editar</button>
+                    <button class="btn-delete delete-btn" data-tweet-id="{{ tweet.id }}">Excluir</button>
+                </div>
+                <div class="edit-form" id="edit-form-{{ tweet.id }}" style="display: none;">
+                    <form method="POST" action="{% url 'edit_tweet' tweet.id %}">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="text" value="{{ tweet.text }}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn-save btn">Salvar</button>
+                        <button type="button" class="btn-cancel btn" data-tweet-id="{{ tweet.id }}">Cancelar</button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% empty %}
@@ -103,6 +155,49 @@
                         $this.next('.like-count').text(response.total_likes);
                     }
                 });
+            });
+
+            $('.edit-btn').click(function() {
+                const tweetId = $(this).data('tweet-id');
+                $('#edit-form-' + tweetId).show();
+                $('#btn-container-' + tweetId).hide();
+            });
+
+            $('.btn-cancel').click(function(event) {
+                const tweetId = $(this).data('tweet-id');
+                $('#edit-form-' + tweetId).hide();
+                $('#btn-container-' + tweetId).show();
+            });
+
+            $('.edit-form form').submit(function(event) {
+                event.preventDefault();
+                const $form = $(this);
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'POST',
+                    data: $form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();  // Recarrega a página ao ter sucesso
+                        }
+                    }
+                });
+            });
+
+            $('.delete-btn').click(function() {
+                const tweetId = $(this).data('tweet-id');
+                if (confirm('Tem certeza de que deseja excluir este tweet?')) {
+                    $.ajax({
+                        url: "{% url 'delete_tweet' 0 %}".replace('0', tweetId),
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#tweet-' + tweetId).remove();  // Remove o tweet da página
+                            }
+                        }
+                    });
+                }
             });
         });
     </script>
